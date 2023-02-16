@@ -55,6 +55,15 @@ class MainFragment : Fragment() {
 
         viewModel.getData().observe(viewLifecycleOwner,observer)
         viewModel.getWeather()
+
+        binding.resourceSwitch.setOnCheckedChangeListener { _, isChecked ->
+            val msg: String = if (isChecked)
+                "Switch Button is Checked"
+            else
+                "Switch Button is UnChecked"
+
+            Snackbar.make(binding.mainView,msg, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun renderData(data:AppState){

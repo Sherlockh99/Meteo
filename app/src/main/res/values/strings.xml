@@ -6,4 +6,5 @@
     <string name="mainfragment">MainFragment</string>
     <string name="failed_to_do">Failed to do</string>
     <string name="it_is_working">It is working</string>
+    <string name="switch_local">Local</string>
 </resources>

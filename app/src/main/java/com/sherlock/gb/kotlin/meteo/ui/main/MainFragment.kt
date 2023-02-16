@@ -25,12 +25,6 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,12 +51,8 @@ class MainFragment : Fragment() {
         viewModel.getWeather()
 
         binding.resourceSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val msg: String = if (isChecked)
-                "Switch Button is Checked"
-            else
-                "Switch Button is UnChecked"
-
-            Snackbar.make(binding.mainView,msg, Snackbar.LENGTH_LONG).show()
+            viewModel.setIsLocal(isChecked)
+            viewModel.getWeather()
         }
     }
 

@@ -6,7 +6,8 @@ import com.sherlock.gb.kotlin.meteo.repository.RepositoryImpl
 
 class MainViewModel(
     private val liveData : MutableLiveData<AppState> = MutableLiveData(),
-    private val repository : RepositoryImpl = RepositoryImpl()
+    private val repository : RepositoryImpl = RepositoryImpl(),
+    private var isLocal: Boolean = false
 ) : ViewModel() {
     fun getData() = liveData
 
@@ -15,12 +16,23 @@ class MainViewModel(
             liveData.postValue(AppState.Loading)
 
             if((0..10).random()>5) {
-                val answer = repository.getWeatherFromServer()
-                //TODO HW параметр с переключателем - локально или сервер
+                val answer = if(getIsLocal()){
+                    repository.getWeatherFromLocalStorage()
+                }else {
+                    repository.getWeatherFromServer()
+                }
                 liveData.postValue(AppState.Success(answer))
             }else{
                 liveData.postValue(AppState.Error(IllegalAccessException()))
             }
         }.start()
+    }
+
+    fun setIsLocal(isLocal: Boolean){
+        this.isLocal = isLocal
+    }
+
+    fun getIsLocal():Boolean{
+        return isLocal
     }
 }

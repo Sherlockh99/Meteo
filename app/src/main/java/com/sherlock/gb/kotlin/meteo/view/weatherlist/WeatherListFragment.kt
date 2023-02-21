@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListBinding
 import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
 import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel
@@ -20,6 +21,7 @@ class WeatherListFragment : Fragment() {
 
     val adapter = WeatherListAdapter()
 
+    var isRussian = true
 
     companion object {
         @JvmStatic
@@ -51,7 +53,19 @@ class WeatherListFragment : Fragment() {
         }
 
         viewModel.getData().observe(viewLifecycleOwner,observer)
-        viewModel.getWeather(true)
+
+        binding.floatingActionButton.setOnClickListener{
+            isRussian = !isRussian
+            if(isRussian){
+                viewModel.getWeatherRussia()
+                binding.floatingActionButton.setImageResource(R.drawable.ic_earth)
+            }else{
+                viewModel.getWeatherWorld()
+                binding.floatingActionButton.setImageResource(R.drawable.ic_russia)
+            }
+        }
+
+        viewModel.getWeatherRussia()
     }
 
     private fun renderData(data: AppState){

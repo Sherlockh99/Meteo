@@ -10,6 +10,9 @@ class MainViewModel(
 ) : ViewModel() {
     fun getData() = liveData
 
+    fun getWeatherRussia() = getWeather(true)
+    fun getWeatherWorld() = getWeather(false)
+
     fun getWeather(isRussian: Boolean){
         Thread{
             liveData.postValue(AppState.Loading)

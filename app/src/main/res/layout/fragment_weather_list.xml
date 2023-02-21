@@ -19,7 +19,7 @@
         android:layout_margin="28dp"
         app:maxImageSize="56dp"
         app:tint="@null"
-        android:src="@drawable/ic_russia"
+        android:src="@drawable/ic_earth"
         android:contentDescription="@string/flag" />
 
     <FrameLayout

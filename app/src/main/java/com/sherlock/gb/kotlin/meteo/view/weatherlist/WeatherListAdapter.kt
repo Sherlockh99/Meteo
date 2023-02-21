@@ -8,6 +8,7 @@ import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListRecyclerItemB
 import com.sherlock.gb.kotlin.meteo.repository.Weather
 
 class WeatherListAdapter(
+    private val onItemListClickListener: OnItemListClickListener,
     private var data: List<Weather> = listOf()
 ): RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
 
@@ -34,6 +35,11 @@ class WeatherListAdapter(
         fun bind(weather: Weather){
             val binding = FragmentWeatherListRecyclerItemBinding.bind(itemView)
             binding.tvCityName.text = weather.city.name
+
+            binding.root.setOnClickListener{
+                onItemListClickListener.onItemClick(weather)
+            }
+
         }
     }
 }

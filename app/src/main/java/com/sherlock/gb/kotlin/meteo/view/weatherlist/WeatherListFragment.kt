@@ -10,16 +10,19 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListBinding
+import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
+import com.sherlock.gb.kotlin.meteo.view.details.DetailsFragment
 import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
 import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnItemListClickListener {
 
     private var _binding: FragmentWeatherListBinding? = null
     private val binding
         get() = _binding!!
 
-    val adapter = WeatherListAdapter()
+    val adapter = WeatherListAdapter(this)
 
     var isRussian = true
 
@@ -88,22 +91,15 @@ class WeatherListFragment : Fragment() {
         }
     }
 
-    /*
-    private fun setData(weatherData: List<Weather>) {
-        /*
-        binding.apply {
-            cityName.text = weatherData.city.name
-            cityCoordinates.text = String.format(
-                getString(R.string.city_coordinates),
-                weatherData.city.lat.toString(),
-                weatherData.city.lon.toString()
-            )
-            temperatureValue.text = weatherData.temperature.toString()
-            feelsLikeValue.text = weatherData.feelsLike.toString()
-        }
-
-         */
+    override fun onItemClick(weather: Weather) {
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_BUNDLE_WEATHER,weather)
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .add(R.id.container, DetailsFragment.newInstance(bundle))
+            .addToBackStack("")
+            .commit()
     }
-*/
 
 }

@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentMainBinding
-import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
+import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 
@@ -48,15 +48,10 @@ class MainFragment : Fragment() {
         }
 
         viewModel.getData().observe(viewLifecycleOwner,observer)
-        viewModel.getWeather()
-
-        binding.resourceSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setIsLocal(isChecked)
-            viewModel.getWeather()
-        }
+        viewModel.getWeather(true)
     }
 
-    private fun renderData(data:AppState){
+    private fun renderData(data: AppState){
         when (data){
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE
@@ -69,14 +64,16 @@ class MainFragment : Fragment() {
             }
             is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
-                setData(data.weatherData)
+                //setData(data.weatherList)
                 val s = "Work"
                 Snackbar.make(binding.mainView,s, Snackbar.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun setData(weatherData: Weather) {
+    /*
+    private fun setData(weatherData: List<Weather>) {
+        /*
         binding.apply {
             cityName.text = weatherData.city.name
             cityCoordinates.text = String.format(
@@ -87,7 +84,9 @@ class MainFragment : Fragment() {
             temperatureValue.text = weatherData.temperature.toString()
             feelsLikeValue.text = weatherData.feelsLike.toString()
         }
-    }
 
+         */
+    }
+*/
 
 }

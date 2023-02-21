@@ -57,6 +57,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
         viewModel.getData().observe(viewLifecycleOwner,observer)
 
+        /*
         binding.floatingActionButton.setOnClickListener{
             isRussian = !isRussian
             if(isRussian){
@@ -68,7 +69,9 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             }
         }
 
-        viewModel.getWeatherRussia()
+         */
+
+        viewModel.getWeatherWorld()
     }
 
     private fun renderData(data: AppState){

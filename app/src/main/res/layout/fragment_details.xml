@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
-        android:background="@color/white"
         android:clickable="true"
+        android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

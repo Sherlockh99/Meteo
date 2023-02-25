@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
 import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.utils.Extensions
 import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {
 
@@ -51,6 +53,7 @@ class DetailsFragment : Fragment() {
                 weather.city.lon.toString()
             )
         }
+        Extensions.showToast(mainView,"Получилось")
     }
 
     companion object {

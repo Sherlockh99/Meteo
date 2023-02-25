@@ -11,10 +11,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListBinding
 import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.utils.Extensions
 import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
 import com.sherlock.gb.kotlin.meteo.view.details.DetailsFragment
 import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
 import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class WeatherListFragment : Fragment(), OnItemListClickListener {
 
@@ -24,7 +26,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
     val adapter = WeatherListAdapter(this)
 
-    var isRussian = true
+    var isRussian = false
 
     companion object {
         @JvmStatic
@@ -57,7 +59,6 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
         viewModel.getData().observe(viewLifecycleOwner,observer)
 
-        /*
         binding.floatingActionButton.setOnClickListener{
             isRussian = !isRussian
             if(isRussian){
@@ -68,9 +69,6 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
                 binding.floatingActionButton.setImageResource(R.drawable.ic_russia)
             }
         }
-
-         */
-
         viewModel.getWeatherWorld()
     }
 
@@ -88,8 +86,11 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
                 adapter.setData(data.weatherList)
-                val s = "Work"
-                Snackbar.make(binding.root,s, Snackbar.LENGTH_LONG).show()
+
+                Extensions.showToast(
+                    mainView,
+                "Work")
+
             }
         }
     }

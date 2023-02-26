@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Meteo</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="feels_like_label">Felt</string>
+    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="mainfragment">MainFragment</string>
+    <string name="failed_to_do">Failed to do</string>
+    <string name="it_is_working">It is working</string>
+    <string name="switch_local">Local</string>
 </resources>

@@ -5,14 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sherlock.gb.kotlin.lessons.repository.xdto.WeatherDTO
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
+import com.sherlock.gb.kotlin.meteo.repository.OnServerResponse
 import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.repository.WeatherLoader
 import com.sherlock.gb.kotlin.meteo.utils.Extensions
 import com.sherlock.gb.kotlin.meteo.view.weatherlist.KEY_BUNDLE_WEATHER
 import kotlinx.android.synthetic.main.fragment_details.*
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), OnServerResponse {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding:FragmentDetailsBinding
@@ -37,20 +40,20 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
-            renderData(it)
+            WeatherLoader(this@DetailsFragment).loadWeather(it.city.lat,it.city.lon)
         }
     }
 
-    private fun renderData(weather: Weather){
+    private fun renderData(weather: WeatherDTO){
         binding.apply {
             loadingLayout.visibility = View.GONE
-            cityName.text = weather.city.name
-            temperatureValue.text = weather.temperature.toString()
-            feelsLikeValue.text = weather.feelsLike.toString()
+            cityName.text = weather.location.name
+            temperatureValue.text = weather.current.tempC.toString()
+            feelsLikeValue.text = weather.current.feelslikeC.toString()
             cityCoordinates.text = String.format(
                 getString(R.string.city_coordinates),
-                weather.city.lat.toString(),
-                weather.city.lon.toString()
+                weather.location.lat.toString(),
+                weather.location.lon.toString()
             )
         }
         Extensions.showToast(mainView,"Получилось")
@@ -63,6 +66,10 @@ class DetailsFragment : Fragment() {
             fragment.arguments = bundle
             return fragment
         }
+    }
+
+    override fun onResponse(weatherDTO: WeatherDTO) {
+        renderData(weatherDTO)
     }
 
 }

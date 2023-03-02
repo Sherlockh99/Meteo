@@ -12,7 +12,6 @@ import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListBinding
 import com.sherlock.gb.kotlin.meteo.repository.Weather
 import com.sherlock.gb.kotlin.meteo.utils.Extensions
-import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
 import com.sherlock.gb.kotlin.meteo.view.details.DetailsFragment
 import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
 import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel

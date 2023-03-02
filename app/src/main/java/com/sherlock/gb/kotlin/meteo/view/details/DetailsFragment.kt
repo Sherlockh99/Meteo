@@ -9,7 +9,7 @@ import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
 import com.sherlock.gb.kotlin.meteo.repository.Weather
 import com.sherlock.gb.kotlin.meteo.utils.Extensions
-import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
+import com.sherlock.gb.kotlin.meteo.view.weatherlist.KEY_BUNDLE_WEATHER
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {

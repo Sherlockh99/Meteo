@@ -5,6 +5,7 @@ import android.os.Looper
 import android.util.Log
 import com.google.gson.Gson
 import com.sherlock.gb.kotlin.lessons.repository.xdto.WeatherDTO
+import com.sherlock.gb.kotlin.meteo.utils.Extensions
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
@@ -23,9 +24,22 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponse) {
             }
         Thread{
             try{
-                val buffer = BufferedReader(InputStreamReader(urlCollection.inputStream))
-                val weatherDTO: WeatherDTO = Gson().fromJson(buffer,WeatherDTO::class.java)
-                Handler(Looper.getMainLooper()).post{onServerResponseListener.onResponse(weatherDTO)}
+                val responseCode = urlCollection.responseCode
+
+                val serverSide = 500 //диапазон ошибок
+                val clientSide = 400 //диапазон ошибок
+                val responnse = 200..299
+
+
+                if(responseCode>=serverSide){
+
+                }else if(responseCode>=clientSide){
+
+                }else if(responseCode in responnse){
+                    val buffer = BufferedReader(InputStreamReader(urlCollection.inputStream))
+                    val weatherDTO: WeatherDTO = Gson().fromJson(buffer,WeatherDTO::class.java)
+                    Handler(Looper.getMainLooper()).post{onServerResponseListener.onResponse(weatherDTO)}
+                }
             }catch (e: Exception){
                 Log.e("Error get weather",e.toString())
             }finally {

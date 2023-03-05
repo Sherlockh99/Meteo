@@ -15,7 +15,7 @@ import com.sherlock.gb.kotlin.meteo.viewmodel.ResponseState
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
-    lateinit var weather: Weather
+    lateinit var localWeather: Weather
     private var _binding: FragmentDetailsBinding? = null
     private val binding:FragmentDetailsBinding
         get(){
@@ -39,7 +39,7 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
-            weather = it
+            localWeather = it
             WeatherLoader(this@DetailsFragment,this@DetailsFragment).loadWeather(it.city.lat,it.city.lon)
         }
     }
@@ -89,13 +89,13 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
     override fun onError(error: ResponseState) {
         when (error){
             is ResponseState.ServerSide ->{
-                renderData(weather)
+                renderData(localWeather)
                 Extensions.showToast(mainView,
                     "Ошибка на стороне сервера: $error. Отображены локальные данные")
             }
             is ResponseState.ClientSide ->
             {
-                renderData(weather)
+                renderData(localWeather)
                 Extensions.showToast(mainView,
                     "Ошибка на стороне клиента $error. Отображены локальные данные"
                 )

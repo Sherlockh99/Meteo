@@ -9,7 +9,7 @@ import com.sherlock.gb.kotlin.lessons.repository.xdto.WeatherDTO
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
 import com.sherlock.gb.kotlin.meteo.repository.*
-import com.sherlock.gb.kotlin.meteo.utils.Extensions
+import com.sherlock.gb.kotlin.meteo.view.extention.ExtentionView
 import com.sherlock.gb.kotlin.meteo.view.weatherlist.KEY_BUNDLE_WEATHER
 import com.sherlock.gb.kotlin.meteo.viewmodel.ResponseState
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -70,7 +70,7 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
                 weather.location.lon.toString()
             )
         }
-        Extensions.showToast(mainView,"Получилось")
+        ExtentionView.showToast(mainView,"Получилось")
     }
 
     companion object {
@@ -90,13 +90,13 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
         when (error){
             is ResponseState.ServerSide ->{
                 renderData(localWeather)
-                Extensions.showToast(mainView,
+                ExtentionView.showToast(mainView,
                     "Ошибка на стороне сервера: $error. Отображены локальные данные")
             }
             is ResponseState.ClientSide ->
             {
                 renderData(localWeather)
-                Extensions.showToast(mainView,
+                ExtentionView.showToast(mainView,
                     "Ошибка на стороне клиента $error. Отображены локальные данные"
                 )
             }

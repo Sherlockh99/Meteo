@@ -13,11 +13,10 @@ class MainViewModel(
     fun getWeatherRussia() = getWeather(true)
     fun getWeatherWorld() = getWeather(false)
 
-    fun getWeather(isRussian: Boolean){
+    private fun getWeather(isRussian: Boolean){
         Thread{
             liveData.postValue(AppState.Loading)
 
-            //if((0..10).random()>5) {
             if(true) {
                 val answer =
                     if(isRussian) repository.getRussianWeatherFromLocalStorage()

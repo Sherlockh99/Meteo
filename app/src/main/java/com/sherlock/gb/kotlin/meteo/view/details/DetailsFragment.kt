@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
 import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.utils.Extensions
 import com.sherlock.gb.kotlin.meteo.utils.KEY_BUNDLE_WEATHER
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {
 
@@ -34,8 +36,9 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather: Weather = requireArguments().getParcelable<Weather>(KEY_BUNDLE_WEATHER)!!
-        renderData(weather)
+        arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
+            renderData(it)
+        }
     }
 
     private fun renderData(weather: Weather){
@@ -50,6 +53,7 @@ class DetailsFragment : Fragment() {
                 weather.city.lon.toString()
             )
         }
+        Extensions.showToast(mainView,"Получилось")
     }
 
     companion object {

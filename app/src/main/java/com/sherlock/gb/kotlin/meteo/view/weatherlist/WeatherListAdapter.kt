@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListRecyclerItemBinding
-import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.repository.weather.Weather
 
 const val KEY_BUNDLE_WEATHER = "key"
 class WeatherListAdapter(

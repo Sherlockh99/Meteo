@@ -1,8 +1,11 @@
 package com.sherlock.gb.kotlin.lessons.repository.xdto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class DayDTO(
     @SerializedName("maxtemp_c")
     val maxtempC: Double,
@@ -44,4 +47,4 @@ data class DayDTO(
     val condition: ConditionDTO,
     @SerializedName("uv")
     val uv: Double
-)
+): Parcelable

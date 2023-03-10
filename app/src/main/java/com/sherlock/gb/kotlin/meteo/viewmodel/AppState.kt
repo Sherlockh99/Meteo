@@ -1,6 +1,6 @@
 package com.sherlock.gb.kotlin.meteo.viewmodel
 
-import com.sherlock.gb.kotlin.meteo.repository.Weather
+import com.sherlock.gb.kotlin.meteo.repository.weather.Weather
 
 sealed class AppState {
     object Loading : AppState()

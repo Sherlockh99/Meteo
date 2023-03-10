@@ -1,6 +1,8 @@
-package com.sherlock.gb.kotlin.meteo.repository
+package com.sherlock.gb.kotlin.meteo.repository.weather
 
 import android.os.Parcelable
+import com.sherlock.gb.kotlin.meteo.repository.City
+import com.sherlock.gb.kotlin.meteo.repository.getDefaultCity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

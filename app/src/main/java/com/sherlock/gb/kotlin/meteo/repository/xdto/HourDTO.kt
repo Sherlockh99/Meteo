@@ -1,8 +1,11 @@
 package com.sherlock.gb.kotlin.lessons.repository.xdto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class HourDTO(
     @SerializedName("chance_of_rain")
     val chanceOfRain: Int,
@@ -70,4 +73,4 @@ data class HourDTO(
     val windchillC: Double,
     @SerializedName("windchill_f")
     val windchillF: Double
-)
+): Parcelable

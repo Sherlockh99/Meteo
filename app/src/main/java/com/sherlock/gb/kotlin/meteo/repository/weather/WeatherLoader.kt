@@ -1,4 +1,4 @@
-package com.sherlock.gb.kotlin.meteo.repository
+package com.sherlock.gb.kotlin.meteo.repository.weather
 
 import android.os.Handler
 import android.os.Looper
@@ -7,18 +7,17 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.sherlock.gb.kotlin.lessons.repository.xdto.WeatherDTO
 import com.sherlock.gb.kotlin.meteo.BuildConfig
+import com.sherlock.gb.kotlin.meteo.repository.OnServerResponse
+import com.sherlock.gb.kotlin.meteo.repository.OnServerResponseListener
 import com.sherlock.gb.kotlin.meteo.viewmodel.ResponseState
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-const val WEATHER_DOMAIN = "https://api.weatherapi.com"
-const val WEATHER_PATH = "/v1/forecast.json"
-const val WEATHER_KEY = "key"
-
 class WeatherLoader(private val onServerResponseListener: OnServerResponse,
-                    private val onErrorListener: OnServerResponseListener) {
+                    private val onErrorListener: OnServerResponseListener
+) {
     fun loadWeather(lat: Double, lon: Double){
         val urlText = "$WEATHER_DOMAIN$WEATHER_PATH?q=$lat,$lon&lang=ru"
         //val urlText = "https://api.weatherapi.com/v1/forecast.json?q=$lat,$lon&lang=ru"

@@ -1,4 +1,4 @@
-package com.sherlock.gb.kotlin.meteo.utils
+package com.sherlock.gb.kotlin.meteo.view.extention
 
 import android.view.View
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.sherlock.gb.kotlin.meteo.R
 
-class Extensions {
+class ExtentionView {
     companion object {
         fun showSnackbar(
             view: View,

@@ -1,8 +1,11 @@
 package com.sherlock.gb.kotlin.lessons.repository.xdto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class LocationDTO(
     @SerializedName("name")
     val name: String,
@@ -20,4 +23,4 @@ data class LocationDTO(
     val localtimeEpoch: Int,
     @SerializedName("localtime")
     val localtime: String
-)
+): Parcelable

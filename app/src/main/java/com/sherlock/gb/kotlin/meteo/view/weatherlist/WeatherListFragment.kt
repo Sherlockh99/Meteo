@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentWeatherListBinding
-import com.sherlock.gb.kotlin.meteo.repository.Weather
-import com.sherlock.gb.kotlin.meteo.utils.Extensions
+import com.sherlock.gb.kotlin.meteo.repository.weather.Weather
+import com.sherlock.gb.kotlin.meteo.view.extention.ExtentionView
 import com.sherlock.gb.kotlin.meteo.view.details.DetailsFragment
 import com.sherlock.gb.kotlin.meteo.viewmodel.AppState
 import com.sherlock.gb.kotlin.meteo.viewmodel.MainViewModel
@@ -86,7 +86,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
                 binding.loadingLayout.visibility = View.GONE
                 adapter.setData(data.weatherList)
 
-                Extensions.showToast(
+                ExtentionView.showToast(
                     mainView,
                 "Work")
 

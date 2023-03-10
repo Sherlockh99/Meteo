@@ -1,8 +1,11 @@
 package com.sherlock.gb.kotlin.lessons.repository.xdto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class AstroDTO(
     @SerializedName("sunrise")
     val sunrise: String,
@@ -20,4 +23,4 @@ data class AstroDTO(
     val isMoonUp: Int,
     @SerializedName("is_sun_up")
     val isSunUp: Int,
-)
+): Parcelable

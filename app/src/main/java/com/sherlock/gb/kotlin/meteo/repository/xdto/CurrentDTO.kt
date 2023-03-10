@@ -1,8 +1,11 @@
 package com.sherlock.gb.kotlin.lessons.repository.xdto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CurrentDTO(
     @SerializedName("last_updated_epoch")
     val lastUpdatedEpoch: Int,
@@ -50,4 +53,4 @@ data class CurrentDTO(
     val gustMph: Double,
     @SerializedName("gust_kph")
     val gustKph: Double
-)
+): Parcelable

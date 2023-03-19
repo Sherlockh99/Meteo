@@ -2,10 +2,9 @@ package com.sherlock.gb.kotlin.meteo.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sherlock.gb.kotlin.meteo.DetailsRepositoryRetrofit2Impl
+import com.sherlock.gb.kotlin.meteo.repository.DetailsRepositoryRetrofit2Impl
 import com.sherlock.gb.kotlin.meteo.repository.City
 import com.sherlock.gb.kotlin.meteo.repository.DetailsRepository
-import com.sherlock.gb.kotlin.meteo.repository.DetailsRepositoryOkHttpImpl
 import com.sherlock.gb.kotlin.meteo.repository.weather.Weather
 
 class DetailsViewModel(
@@ -22,11 +21,16 @@ class DetailsViewModel(
             override fun onResponse(weather: Weather) {
                 liveData.postValue(DetailsState.Success(weather))
             }
+
+            override fun onFail() {
+                TODO("Not yet implemented")
+            }
+
         })
     }
 
-    fun interface Callback {
+    interface Callback {
         fun onResponse(weather: Weather)
-        //TODO HW Fail
+        fun onFail()
     }
 }

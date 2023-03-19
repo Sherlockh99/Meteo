@@ -17,7 +17,7 @@ class WeatherLoaderService(val name: String=""): IntentService(name) {
         intent?.let {
             val lat = it.getDoubleExtra(KEY_BUNDLE_LAT,0.0).toString()
             val lon = it.getDoubleExtra(KEY_BUNDLE_LON,0.0).toString()
-            val urlText = "$WEATHER_DOMAIN$WEATHER_PATH?q=$lat,$lon&lang=ru"
+            val urlText = "$WEATHER_DOMAIN$WEATHER_ENDPOINT?q=$lat,$lon&lang=ru"
             val uri = URL(urlText)
             val urlCollection: HttpsURLConnection =
                 (uri.openConnection() as HttpsURLConnection).apply {

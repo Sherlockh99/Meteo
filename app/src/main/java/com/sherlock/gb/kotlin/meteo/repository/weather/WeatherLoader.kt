@@ -19,7 +19,7 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponse,
                     private val onErrorListener: OnServerResponseListener
 ) {
     fun loadWeather(lat: Double, lon: Double){
-        val urlText = "$WEATHER_DOMAIN$WEATHER_PATH?q=$lat,$lon&lang=ru"
+        val urlText = "$WEATHER_DOMAIN$WEATHER_ENDPOINT?q=$lat,$lon&lang=ru"
         //val urlText = "https://api.weatherapi.com/v1/forecast.json?q=$lat,$lon&lang=ru"
         val uri = URL(urlText)
 

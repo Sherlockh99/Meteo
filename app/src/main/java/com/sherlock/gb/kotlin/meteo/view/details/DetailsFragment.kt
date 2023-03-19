@@ -1,26 +1,25 @@
 package com.sherlock.gb.kotlin.meteo.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sherlock.gb.kotlin.lessons.repository.xdto.WeatherDTO
+import android.widget.ImageView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.load
+import coil.request.ImageRequest
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
-import com.sherlock.gb.kotlin.meteo.repository.*
 import com.sherlock.gb.kotlin.meteo.repository.weather.*
-import com.sherlock.gb.kotlin.meteo.view.extention.ExtentionView
 import com.sherlock.gb.kotlin.meteo.view.weatherlist.KEY_BUNDLE_WEATHER
-import com.sherlock.gb.kotlin.meteo.viewmodel.ResponseState
-import kotlinx.android.synthetic.main.fragment_details.*
+import com.sherlock.gb.kotlin.meteo.viewmodel.DetailsState
+import com.sherlock.gb.kotlin.meteo.viewmodel.DetailsViewModel
 
-
-class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
+class DetailsFragment : Fragment() {
     lateinit var localWeather: Weather
     private var _binding: FragmentDetailsBinding? = null
     private val binding:FragmentDetailsBinding
@@ -31,7 +30,6 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        requireContext().unregisterReceiver(receiver)
     }
 
     override fun onCreateView(
@@ -43,58 +41,81 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
         return binding.root
     }
 
-    private val receiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intent?.let {
-                it.getParcelableExtra<WeatherDTO>(KEY_BUNDLE_SERVICE_BROADCAST_WEATHER)?.let{
-                    onResponse(it)
-                }
-            }
-        }
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireContext().registerReceiver(receiver,
-            IntentFilter(KEY_WAVE_SERVICE_BROADCAST)
-        )
+
+        viewModel.getLiveData().observe(viewLifecycleOwner,object: Observer<DetailsState> {
+            override fun onChanged(t: DetailsState) {
+                renderData(t)
+            }
+        })
+
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
             localWeather = it
-            requireActivity().startService(Intent(requireContext(),WeatherLoaderService::class.java).apply {
-                putExtra(KEY_BUNDLE_LAT,localWeather.city.lat)
-                putExtra(KEY_BUNDLE_LON,localWeather.city.lon)
-            })
-
+            viewModel.getWeather(localWeather.city)
         }
     }
 
-    private fun renderData(weather: Weather){
-        binding.apply {
-            loadingLayout.visibility = View.GONE
-            cityName.text = weather.city.name
-            temperatureValue.text = weather.temperature.toString()
-            feelsLikeValue.text = weather.feelsLike.toString()
-            cityCoordinates.text = String.format(
-                getString(R.string.city_coordinates),
-                weather.city.lat.toString(),
-                weather.city.lon.toString()
-            )
+    private fun renderData(detailsState: DetailsState){
+        when(detailsState){
+            is DetailsState.Success -> {
+                val weather =  detailsState.weather
+                binding.apply {
+                    loadingLayout.visibility = View.GONE
+                    cityName.text = weather.city.name
+                    temperatureValue.text = weather.temperature.toString()
+                    feelsLikeValue.text = weather.feelsLike.toString()
+                    cityCoordinates.text = String.format(
+                        getString(R.string.city_coordinates),
+                        weather.city.lat.toString(),
+                        weather.city.lon.toString()
+                    )
+
+                    val urlIcon = "https:${weather.icon}"
+
+                    /** загрузка иконки с помощью Glide
+                    Glide.with(requireContext())
+                    .load(urlIcon)
+                    .into(icon)
+                     */
+
+                    /** загрузка иконки с помощью Picasso
+                    Picasso.get()?.load(urlIcon)?.into(icon)
+                     */
+
+                    icon.load(urlIcon)
+                    headerCityIcon.loadSvg("https://svgsilh.com/svg/1801287.svg")
+                }
+            }
+            is DetailsState.Error -> {
+
+            }
+            DetailsState.Loading -> {
+
+            }
         }
     }
 
-    private fun renderData(weather: WeatherDTO){
-        binding.apply {
-            loadingLayout.visibility = View.GONE
-            cityName.text = weather.location.name
-            temperatureValue.text = weather.current.tempC.toString()
-            feelsLikeValue.text = weather.current.feelslikeC.toString()
-            cityCoordinates.text = String.format(
-                getString(R.string.city_coordinates),
-                weather.location.lat.toString(),
-                weather.location.lon.toString()
-            )
-        }
-        ExtentionView.showToast(mainView,"Получилось")
+    fun ImageView.loadSvg(url: String){
+
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry{
+                add(SvgDecoder(this@loadSvg.context))
+            }
+            .build()
+
+        val request = ImageRequest.Builder(requireContext())
+            .crossfade(500)
+            .crossfade(true)
+            .data(url)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
     companion object {
@@ -103,27 +124,6 @@ class DetailsFragment : Fragment(), OnServerResponse, OnServerResponseListener {
             val fragment = DetailsFragment()
             fragment.arguments = bundle
             return fragment
-        }
-    }
-
-    override fun onResponse(weatherDTO: WeatherDTO) {
-        renderData(weatherDTO)
-    }
-
-    override fun onError(error: ResponseState) {
-        when (error){
-            is ResponseState.ServerSide ->{
-                renderData(localWeather)
-                ExtentionView.showToast(mainView,
-                    "Ошибка на стороне сервера: $error. Отображены локальные данные")
-            }
-            is ResponseState.ClientSide ->
-            {
-                renderData(localWeather)
-                ExtentionView.showToast(mainView,
-                    "Ошибка на стороне клиента $error. Отображены локальные данные"
-                )
-            }
         }
     }
 }

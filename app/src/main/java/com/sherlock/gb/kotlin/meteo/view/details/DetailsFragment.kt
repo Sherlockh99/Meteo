@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.load
+import coil.request.ImageRequest
 import com.sherlock.gb.kotlin.meteo.R
 import com.sherlock.gb.kotlin.meteo.databinding.FragmentDetailsBinding
 import com.sherlock.gb.kotlin.meteo.repository.weather.*
@@ -69,6 +74,21 @@ class DetailsFragment : Fragment() {
                         weather.city.lat.toString(),
                         weather.city.lon.toString()
                     )
+
+                    val urlIcon = "https:${weather.icon}"
+
+                    /** загрузка иконки с помощью Glide
+                    Glide.with(requireContext())
+                    .load(urlIcon)
+                    .into(icon)
+                     */
+
+                    /** загрузка иконки с помощью Picasso
+                    Picasso.get()?.load(urlIcon)?.into(icon)
+                     */
+
+                    icon.load(urlIcon)
+                    headerCityIcon.loadSvg("https://svgsilh.com/svg/1801287.svg")
                 }
             }
             is DetailsState.Error -> {
@@ -78,6 +98,24 @@ class DetailsFragment : Fragment() {
 
             }
         }
+    }
+
+    fun ImageView.loadSvg(url: String){
+
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry{
+                add(SvgDecoder(this@loadSvg.context))
+            }
+            .build()
+
+        val request = ImageRequest.Builder(requireContext())
+            .crossfade(500)
+            .crossfade(true)
+            .data(url)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
     companion object {

@@ -9,7 +9,8 @@ import kotlinx.android.parcel.Parcelize
 data class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 0,
-    val feelsLike: Int = 0
+    val feelsLike: Int = 0,
+    val icon: String = "//cdn.weatherapi.com/weather/64x64/night/113.png"
 ):Parcelable
 
 fun getWorldCities() = listOf(
